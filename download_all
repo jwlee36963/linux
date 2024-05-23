@@ -1,0 +1,43 @@
+#!/bin/bash
+
+# 检查 /dev/sdb1 和 /dev/sdb2 是否存在
+if [ ! -b "/dev/sdb1" ] || [ ! -b "/dev/sdb2" ]; then
+    echo "Either /dev/sdb1 or /dev/sdb2 does not exist. Exiting script."
+    exit 1
+fi
+
+# 检查并创建 mnt/fat32 目录
+if [ ! -d "mnt/fat32" ]; then
+    echo "Creating 'mnt/fat32' directory..."
+    mkdir -p mnt/fat32
+fi
+
+# 检查并创建 mnt/ext4 目录
+if [ ! -d "mnt/ext4" ]; then
+    echo "Creating 'mnt/ext4' directory..."
+    mkdir -p mnt/ext4
+fi
+
+# 挂载 /dev/sdb1 和 /dev/sdb2
+echo "Mounting SD partitions..."
+sudo mount /dev/sdb1 mnt/fat32
+sudo mount /dev/sdb2 mnt/ext4
+
+# 执行内核模块安装
+echo "Installing kernel modules..."
+sudo env PATH=$PATH make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- INSTALL_MOD_PATH=mnt/ext4 modules_install
+
+# 备份并更新 FAT32 分区
+echo "Updating kernel image, dtb and dtbo ..."
+sudo cp mnt/fat32/$KERNEL.img mnt/fat32/$KERNEL-backup.img
+sudo cp arch/arm64/boot/Image mnt/fat32/$KERNEL.img
+sudo cp arch/arm64/boot/dts/broadcom/*.dtb mnt/fat32/
+sudo cp arch/arm64/boot/dts/overlays/*.dtb* mnt/fat32/overlays/
+sudo cp arch/arm64/boot/dts/overlays/README mnt/fat32/overlays/
+
+# 卸载分区
+echo "Unmounting SD partitions..."
+sudo umount mnt/fat32
+sudo umount mnt/ext4
+
+echo "All steps completed successfully."
