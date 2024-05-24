@@ -1,2 +1,3 @@
 #!/bin/bash
 make bcm2712_defconfig
+make menuconfig
