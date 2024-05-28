@@ -1,0 +1,9 @@
+CompileFlags:
+    Add:
+        [-I, "/usr/include"]
+    Remove: 
+        [
+            -fno-allow-store-data-races,
+            -fconserve-stack,
+            -mabi=lp64
+        ]
