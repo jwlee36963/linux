@@ -5,11 +5,6 @@
 
 menu "Misc devices"
 
-config HELLO_MODULE
-    tristate "Hello Module"
-    help
-      This is a simple example module.
-
 config SENSORS_LIS3LV02D
 	tristate
 	depends on INPUT

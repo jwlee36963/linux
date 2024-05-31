@@ -11,4 +11,9 @@ config LED_GPIO17
 	help
 	  M -> Module.
 
+config HELLO_MODULE
+	tristate "HELLO_MODULE"
+	help
+	  M -> Module.
+
 endif # JW_MODS
