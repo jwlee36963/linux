@@ -1,0 +1,14 @@
+# SPDX-License-Identifier: GPL-2.0-only
+menuconfig JW_MODS
+	tristate "Jw Modules Support"
+	help
+	  M -> Module.
+
+if JW_MODS
+
+config LED_GPIO17
+	tristate "LED_GPIO17"
+	help
+	  M -> Module.
+
+endif # JW_MODS

@@ -76,6 +76,9 @@
 		};
 	};
 
+	jw_led: jw_gpio17 {
+	};
+
 	sd_io_1v8_reg: sd_io_1v8_reg {
 		compatible = "regulator-gpio";
 		regulator-name = "vdd-sd-io";
@@ -235,6 +238,11 @@ i2c_rp1boot: &_i2c3 { };
 
 gpio: &rp1_gpio {
 	status = "okay";
+};
+
+&jw_led {
+	compatible = "jw,jwled369";
+	led-gpios = <&gpio 17 GPIO_ACTIVE_HIGH>;
 };
 
 aux: &dummy {};
